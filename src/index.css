@@ -63,6 +63,10 @@ body {
     @apply h-8 rounded px-2 ring-1 ring-green-600;
   }
 
+  .textarea {
+    @apply resize-none rounded p-2 ring-1 ring-green-600;
+  }
+
   .input-status {
     @apply text-sm text-destructive;
   }

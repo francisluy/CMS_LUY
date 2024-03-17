@@ -18,7 +18,7 @@ export default function Hero() {
   const [blur, setBlur] = useState(false);
   const [isBlur, setIsBlur] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [revert, setRevert] = useState(false);
+  const [refetch, setRefetch] = useState(false);
 
   const nameRef = useRef(null);
   const titleRef = useRef(null);
@@ -46,7 +46,7 @@ export default function Hero() {
       }
     };
     getData();
-  }, [revert]);
+  }, [refetch]);
 
   const toggleBlur = () => {
     setIsBlur((prev) => !prev);
@@ -55,7 +55,7 @@ export default function Hero() {
   const reset = () => {
     input1Ref.current.value = "";
     input2Ref.current.value = "";
-    setRevert((prev) => !prev);
+    setRefetch((prev) => !prev);
   };
 
   const imageHandler = (event, field) => {
@@ -111,10 +111,11 @@ export default function Hero() {
       uploadFiles(newBackground);
       const docRef = doc(db, "hero", id);
       await updateDoc(docRef, { ...data });
-      setIsLoading(false);
       reset();
     } catch (error) {
       alert(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
