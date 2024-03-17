@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 import UploadField from "./ui/UploadField";
-import Button from "./ui/Button";
+import { SaveButton, CancelButton } from "./ui/Button";
 import Section from "./ui/Section";
 import InputField from "./ui/InputField";
 import { db, storage } from "../config/firebase";
@@ -197,18 +197,8 @@ export default function Hero() {
           <label htmlFor="blur">Apply background blur?</label>
         </div>
         <div className="flex flex-col gap-4 py-8 lg:flex-row">
-          <Button
-            name="Cancel"
-            type="cancel"
-            disabled={isLoading}
-            onClick={reset}
-          />
-          <Button
-            name="Save"
-            type="submit"
-            disabled={isLoading}
-            onClick={handleSubmit}
-          />
+          <CancelButton disabled={isLoading} onClick={reset} />
+          <SaveButton disabled={isLoading} onClick={handleSubmit} />
         </div>
       </div>
     </Section>
