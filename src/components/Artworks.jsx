@@ -43,7 +43,6 @@ export default function Artworks() {
         const images = data.docs.map((doc) => doc.data().url);
         setArtworksData(dataObject);
         SetImageList(images);
-        console.log(dataObject);
       } catch (error) {
         alert(error);
       }

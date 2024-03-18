@@ -1,5 +1,6 @@
 import About from "./About";
 import Artworks from "./Artworks";
+import Contact from "./Contact";
 import Hero from "./Hero";
 import Projects from "./Projects";
 import Skills from "./Skills";
@@ -12,6 +13,7 @@ export default function MainContent() {
       <Skills />
       <Projects />
       <Artworks />
+      <Contact />
     </div>
   );
 }
