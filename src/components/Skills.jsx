@@ -83,86 +83,81 @@ export default function Skills() {
   };
 
   return (
-    <div id="skills">
-      <Section id="skills" name="Skills Section">
-        {isEditing ? (
-          <div className="space-y-6">
-            <h3 className="font-semibold">Edit Skill</h3>
-            <div className="space-y-6 lg:w-[400px]">
-              <InputField name="Title">
-                <input
-                  id="title"
-                  type="text"
-                  placeholder={skill.title}
-                  className="input"
-                  disabled={isLoading}
-                  onChange={(e) => {
-                    titleRef.current = e.target.value;
-                  }}
-                />
-              </InputField>
+    <Section id="skills" name="Skills Section">
+      {isEditing ? (
+        <div className="space-y-6">
+          <h3 className="font-semibold">Edit Skill</h3>
+          <div className="space-y-6 lg:w-[400px]">
+            <InputField name="Title">
+              <input
+                id="title"
+                type="text"
+                placeholder={skill.title}
+                className="input"
+                disabled={isLoading}
+                onChange={(e) => {
+                  titleRef.current = e.target.value;
+                }}
+              />
+            </InputField>
 
-              <InputField name="List">
-                {skill.list.map((item, index) => (
-                  <div key={item} className="flex gap-4">
-                    <input
-                      key={item}
-                      type="text"
-                      placeholder={item}
-                      className="input grow"
-                      disabled={isLoading}
-                      onChange={(e) => {
-                        listRef.current[index] = e.target.value;
-                      }}
-                    />
-                    <DeleteButton
-                      disabled={isLoading}
-                      onClick={() => deleteItem(index)}
-                    />
-                  </div>
-                ))}
-              </InputField>
-              <InputField name="Add">
-                <input
-                  type="text"
-                  placeholder="New skill"
-                  className="input"
-                  disabled={isLoading}
-                  onChange={(e) => {
-                    addRef.current = e.target.value;
-                  }}
-                />
-              </InputField>
-            </div>
-            <div className="flex flex-col gap-4 py-8 lg:flex-row">
-              <CancelButton disabled={isLoading} onClick={reset} />
-              <SaveButton disabled={isLoading} onClick={handleSubmit} />
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-6">
-            <div className="md: flex flex-col items-end gap-4 md:flex-row">
-              {skillsData.map((skill, index) => (
-                <div
-                  key={skill?.id}
-                  className="flex w-full flex-col items-center justify-center rounded-xl bg-white py-10"
-                >
-                  <p className="font-semibold">{skill.title}</p>
-                  <ul className=" list-inside list-disc">
-                    {skill.list.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                  <EditButton
-                    className="mt-4"
-                    onClick={() => editSkill(index)}
+            <InputField name="List">
+              {skill.list.map((item, index) => (
+                <div key={item} className="flex gap-4">
+                  <input
+                    key={item}
+                    type="text"
+                    placeholder={item}
+                    className="input grow"
+                    disabled={isLoading}
+                    onChange={(e) => {
+                      listRef.current[index] = e.target.value;
+                    }}
+                  />
+                  <DeleteButton
+                    disabled={isLoading}
+                    onClick={() => deleteItem(index)}
                   />
                 </div>
               ))}
-            </div>
+            </InputField>
+            <InputField name="Add">
+              <input
+                type="text"
+                placeholder="New skill"
+                className="input"
+                disabled={isLoading}
+                onChange={(e) => {
+                  addRef.current = e.target.value;
+                }}
+              />
+            </InputField>
           </div>
-        )}
-      </Section>
-    </div>
+          <div className="flex flex-col gap-4 py-8 lg:flex-row">
+            <CancelButton disabled={isLoading} onClick={reset} />
+            <SaveButton disabled={isLoading} onClick={handleSubmit} />
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-6">
+          <div className="md: flex flex-col items-end gap-4 md:flex-row">
+            {skillsData.map((skill, index) => (
+              <div
+                key={skill?.id}
+                className="flex w-full flex-col items-center justify-center rounded-xl bg-white py-10"
+              >
+                <p className="font-semibold">{skill.title}</p>
+                <ul className=" list-inside list-disc">
+                  {skill.list.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <EditButton className="mt-4" onClick={() => editSkill(index)} />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </Section>
   );
 }

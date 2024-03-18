@@ -86,47 +86,45 @@ export default function About() {
   };
 
   return (
-    <div id="about">
-      <Section id="about" name="About Section">
-        <div className="space-y-6">
-          <div className="space-y-6 lg:w-[824px]">
-            <InputField name="Content" status={null}>
-              <textarea
-                ref={inputRef}
-                id="content"
-                cols="30"
-                rows="10"
-                placeholder={content}
-                className="textarea"
-                disabled={isLoading}
-                onChange={(e) => {
-                  contentRef.current = e.target.value;
-                }}
-              />
-            </InputField>
-          </div>
-          <UploadField
-            id="avatar"
-            name="Avatar"
-            src={avatar}
-            disabled={isLoading}
-          >
-            <input
-              id="avatar"
-              type="file"
-              accept="image/png, image/jpeg, image/webp"
-              hidden
+    <Section id="about" name="About Section">
+      <div className="space-y-6">
+        <div className="space-y-6 lg:w-[824px]">
+          <InputField name="Content" status={null}>
+            <textarea
+              ref={inputRef}
+              id="content"
+              cols="30"
+              rows="10"
+              placeholder={content}
+              className="textarea"
               disabled={isLoading}
-              onChange={(e) => imageHandler(e)}
+              onChange={(e) => {
+                contentRef.current = e.target.value;
+              }}
             />
-          </UploadField>
-
-          <div className="flex flex-col gap-4 py-8 lg:flex-row">
-            <CancelButton disabled={isLoading} onClick={reset} />
-            <SaveButton disabled={isLoading} onClick={handleSubmit} />
-          </div>
+          </InputField>
         </div>
-      </Section>
-    </div>
+        <UploadField
+          id="avatar"
+          name="Avatar"
+          src={avatar}
+          disabled={isLoading}
+        >
+          <input
+            id="avatar"
+            type="file"
+            accept="image/png, image/jpeg, image/webp"
+            hidden
+            disabled={isLoading}
+            onChange={(e) => imageHandler(e)}
+          />
+        </UploadField>
+
+        <div className="flex flex-col gap-4 py-8 lg:flex-row">
+          <CancelButton disabled={isLoading} onClick={reset} />
+          <SaveButton disabled={isLoading} onClick={handleSubmit} />
+        </div>
+      </div>
+    </Section>
   );
 }

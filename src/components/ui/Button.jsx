@@ -37,13 +37,28 @@ export function EditButton({ className, disabled, ...rest }) {
   return (
     <button
       className={cn(
-        "flex w-24 items-center justify-center gap-2 rounded-md bg-[#1B8057] px-4 py-2 text-[#EDE9A3]",
+        "flex w-full items-center justify-center gap-2 rounded-md bg-[#1B8057] px-4 py-2 text-[#EDE9A3] lg:w-24",
         className,
       )}
       disabled={disabled}
       {...rest}
     >
       {disabled ? <Spinner /> : "Edit"}
+    </button>
+  );
+}
+
+export function AddButton({ className, disabled, ...rest }) {
+  return (
+    <button
+      className={cn(
+        "flex w-full items-center justify-center gap-2 rounded-md px-4 py-2 text-green-600 ring-1 ring-green-600 lg:w-24",
+        className,
+      )}
+      disabled={disabled}
+      {...rest}
+    >
+      {disabled ? <Spinner /> : "+ New"}
     </button>
   );
 }

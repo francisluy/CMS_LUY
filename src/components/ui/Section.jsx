@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { cn } from "../../lib/utils";
 
-export default function Section({ name, className, children }) {
+export default function Section({ id, name, className, children }) {
   return (
-    <div className="flex w-full flex-col">
+    <div id={id} className="flex w-full flex-col">
       <div className="flex h-16 w-full items-center bg-gradient-to-r from-green-200 to-amber-50 px-4 text-xl font-semibold">
         <h2>{name}</h2>
       </div>
