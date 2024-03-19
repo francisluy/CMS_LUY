@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { MdMenu, MdClose } from "react-icons/md";
 import { cn } from "../lib/utils";
+import { auth } from "../config/firebase";
+import { signOut } from "firebase/auth";
 
 const navItems = [
   {
@@ -33,6 +35,10 @@ const navItems = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
+  const logout = async () => {
+    await signOut(auth);
+  };
+
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
   };
@@ -51,6 +57,14 @@ export default function Navbar() {
             </div>
           </a>
         ))}
+        <div className="w-full pt-32">
+          <button
+            className="flex w-full items-center justify-center gap-2 rounded-md bg-[#EDE9A3] px-4 py-2 font-semibold text-green-950"
+            onClick={logout}
+          >
+            Logout
+          </button>
+        </div>
       </div>
       <button onClick={toggleNavbar} className="text-3xl lg:hidden">
         {isOpen ? <MdClose /> : <MdMenu />}
@@ -74,6 +88,14 @@ export default function Navbar() {
             </div>
           </a>
         ))}
+        <div className="w-full pt-8">
+          <button
+            className="flex w-full items-center justify-center gap-2 rounded-md bg-[#EDE9A3] px-4 py-2 font-semibold text-green-950"
+            onClick={logout}
+          >
+            Logout
+          </button>
+        </div>
       </div>
     </nav>
   );
