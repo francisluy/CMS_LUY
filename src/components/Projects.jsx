@@ -24,17 +24,20 @@ import { imgPlaceholder } from "../assets";
 const defaultValues = [
   {
     title: "My Project",
+    role: "My Role",
     date: "Jan 1, 2024",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus, numquam.",
     image: imgPlaceholder,
     id: "0",
+    stack: [],
   },
 ];
 
 export default function Projects() {
   const [projectsData, setProjectsData] = useState(defaultValues);
   const [project, setProject] = useState(defaultValues[0]);
+  const [iconsData, setIconsData] = useState([{}]);
   const [newImage, setNewImage] = useState(null);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -43,12 +46,15 @@ export default function Projects() {
   const [refetch, setRefetch] = useState(false);
 
   const titleRef = useRef();
+  const roleRef = useRef();
   const dateRef = useRef();
   const descriptionRef = useRef();
+  const iconsRef = useRef([]);
 
   useEffect(() => {
     const getData = async () => {
       const projects = collection(db, "projects");
+      const icons = collection(db, "icons");
       try {
         const data = await getDocs(projects);
         const dataObject = data.docs.map((doc) => ({
@@ -56,6 +62,13 @@ export default function Projects() {
           id: doc.id,
         }));
         setProjectsData(dataObject);
+
+        const iconsData = await getDocs(icons);
+        const iconsObject = iconsData.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setIconsData(iconsObject);
       } catch (error) {
         alert(error);
       }
@@ -67,6 +80,12 @@ export default function Projects() {
     setIsEditing(false);
     setIsAdding(false);
     setProject(defaultValues[0]);
+    setNewImage(null);
+    titleRef.current = undefined;
+    roleRef.current = undefined;
+    dateRef.current = undefined;
+    descriptionRef.current = undefined;
+    iconsRef.current = [];
     setRefetch((prev) => !prev);
   };
 
@@ -95,7 +114,9 @@ export default function Projects() {
     if (
       isAdding &&
       (!titleRef.current ||
+        !roleRef.current ||
         !descriptionRef.current | !dateRef.current ||
+        iconsRef.current.length === 0 ||
         !newImage)
     ) {
       alert("Project data is incomplete.");
@@ -112,6 +133,11 @@ export default function Projects() {
         : titleRef.current
           ? titleRef.current
           : project.title,
+      role: isAdding
+        ? roleRef.current
+        : roleRef.current
+          ? roleRef.current
+          : project.role,
       date: isAdding
         ? dateRef.current
         : dateRef.current
@@ -123,6 +149,7 @@ export default function Projects() {
           ? descriptionRef.current
           : project.description,
       image: isAdding ? imageUrl : newImage ? imageUrl : project.image,
+      stack: iconsRef.current,
     };
     try {
       await uploadFiles(newImage);
@@ -198,6 +225,18 @@ export default function Projects() {
                   }}
                 />
               </InputField>
+              <InputField name="Role">
+                <input
+                  id="role"
+                  type="text"
+                  placeholder={project.role}
+                  className="input"
+                  disabled={isLoading}
+                  onChange={(e) => {
+                    roleRef.current = e.target.value;
+                  }}
+                />
+              </InputField>
               <InputField name="Date">
                 <input
                   id="date"
@@ -223,6 +262,42 @@ export default function Projects() {
                   }}
                 />
               </InputField>
+
+              <InputField name="Tech stack icon">
+                <div className="grid grid-cols-2 gap-2">
+                  {iconsData.map((icon) => (
+                    <div key={icon.id} className="flex gap-2">
+                      <input
+                        id={icon.id}
+                        type="checkbox"
+                        value={icon.url}
+                        defaultChecked={
+                          isAdding
+                            ? false
+                            : project.stack.includes(icon.url)
+                              ? true
+                              : false
+                        }
+                        onChange={(e) => {
+                          const arr = e.target.checked
+                            ? [...iconsRef.current, icon.url]
+                            : iconsRef.current.includes(icon.url)
+                              ? iconsRef.current.toSpliced(
+                                  iconsRef.current.indexOf(icon.url),
+                                  1,
+                                )
+                              : iconsRef.current;
+                          iconsRef.current = arr;
+                          console.log(arr);
+                        }}
+                      />
+                      <label htmlFor={icon.id} className="text-sm">
+                        {icon.id}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </InputField>
             </div>
           </div>
           <div className="flex flex-col gap-4 py-8 lg:flex-row">
@@ -247,11 +322,22 @@ export default function Projects() {
                   <div className="w-full space-y-4">
                     <div>
                       <p className="text-lg font-semibold">{project.title}</p>
+                      <p>{project.role}</p>
                       <p className="text-sm">{project.date}</p>
                     </div>
                     <p className="max-w-prose text-pretty">
                       {project.description}
                     </p>
+                    <div className="flex gap-2">
+                      {project.stack.map((logo) => (
+                        <img
+                          key={logo}
+                          src={logo}
+                          alt=""
+                          className="size-[24px]"
+                        />
+                      ))}
+                    </div>
                   </div>
                 </div>
 
@@ -260,7 +346,7 @@ export default function Projects() {
                     onClick={() => {
                       setIsEditing(true);
                       setProject(projectsData[index]);
-                      console.log(projectsData[index]);
+                      iconsRef.current = projectsData[index].stack;
                     }}
                   />
                   <DeleteButton
