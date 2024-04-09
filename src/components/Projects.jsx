@@ -115,7 +115,8 @@ export default function Projects() {
       isAdding &&
       (!titleRef.current ||
         !roleRef.current ||
-        !descriptionRef.current | !dateRef.current ||
+        !descriptionRef.current ||
+        !dateRef.current ||
         iconsRef.current.length === 0 ||
         !newImage)
     ) {
